@@ -42,7 +42,9 @@ app.post('/basics', async (req, res) => {
 
 app.get('/basics', async (req, res) => {
   try {
-    const allMovies = await pool.query('SELECT * FROM basics_imdb')
+    const allMovies = await pool.query(
+      'SELECT * FROM basics_imdb ORDER BY tconst DESC LIMIT 100',
+    )
     res.json(allMovies.rows)
   } catch (err) {
     console.error(err.message)
@@ -109,7 +111,9 @@ app.post('/names', async (req, res) => {
 
 app.get('/names', async (req, res) => {
   try {
-    const allNames = await pool.query('SELECT * FROM names_imdb')
+    const allNames = await pool.query(
+      'SELECT * FROM names_imdb ORDER BY nconst DESC LIMIT 100',
+    )
     res.json(allNames.rows)
   } catch (err) {
     console.error(err.message)
