@@ -1,20 +1,26 @@
-import React, { Fragment } from "react";
-import "./App.css";
+import React, { Fragment } from 'react'
+import './App.css'
 
 //components
 
-import InputTodo from "./components/InputTodo";
-import ListTodos from "./components/ListTodos";
+import MovieInput from './components/MovieForm'
+import MovieListnoAction from './components/MovieList'
+import DeleteMovie from './components/DeleteMovie'
+import UpdateMovie from './components/UpdateMovie'
+import MovieList from './components/MovieListButtons'
 
 function App() {
   return (
     <Fragment>
+      <div className="navbar">
+        <h1>IMDB Movie dataset</h1>
+      </div>
       <div className="container">
-        <InputTodo />
-        <ListTodos />
+        <MovieInput />
+        <MovieList />
       </div>
     </Fragment>
-  );
+  )
 }
 
-export default App;
+export default App
