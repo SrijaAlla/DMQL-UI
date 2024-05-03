@@ -6,6 +6,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles'
 const BlackBox = styled(Box)(({}) => ({
   display: 'flex',
 }))
+
 // Define your custom theme
 const theme = createTheme({
   palette: {
@@ -17,19 +18,17 @@ const theme = createTheme({
     },
   },
 })
+
 const ThemeField = styled(TextField)(({}) => ({
   marginRight: '2em',
 }))
-const MovieForm = () => {
+
+const NameForm = () => {
   const [formData, setFormData] = useState({
-    tconst: '',
-    titletype: '',
-    primarytitle: '',
-    originaltitle: '',
-    isadult: '',
-    startyear: '',
-    endyear: '',
-    runtimeminutes: '',
+    nconst: '',
+    primaryname: '',
+    birthyear: '',
+    deathyear: '',
   })
 
   const handleChange = (e) => {
@@ -39,7 +38,7 @@ const MovieForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      const response = await fetch('http://localhost:5000/basics', {
+      const response = await fetch('http://localhost:5000/names', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -50,14 +49,10 @@ const MovieForm = () => {
       console.log(data)
       // Reset form after successful submission
       setFormData({
-        tconst: '',
-        titletype: '',
-        primarytitle: '',
-        originaltitle: '',
-        isadult: '',
-        startyear: '',
-        endyear: '',
-        runtimeminutes: '',
+        nconst: '',
+        primaryname: '',
+        birthyear: '',
+        deathyear: '',
       })
     } catch (error) {
       console.error(error)
@@ -65,75 +60,40 @@ const MovieForm = () => {
   }
 
   return (
-    // <Box display="flex" flexDirection="column" alignItems="center">
     <BlackBox display="flex" flexDirection="column" alignItems="center">
       <Box>
-        <h2>Insert Movie Information</h2>
+        <h2>Insert Name Information</h2>
       </Box>
       <Box component="form" onSubmit={handleSubmit}>
         <ThemeField
-          label="tconst"
-          name="tconst"
-          value={formData.tconst}
+          label="nconst"
+          name="nconst"
+          value={formData.nconst}
           onChange={handleChange}
           margin="normal"
           variant="outlined"
         />
         <ThemeField
-          label="Title Type"
-          name="titletype"
-          value={formData.titletype}
+          label="Primary Name"
+          name="primaryname"
+          value={formData.primaryname}
           onChange={handleChange}
           margin="normal"
           variant="outlined"
         />
         <ThemeField
-          label="Primary Title"
-          name="primarytitle"
-          value={formData.primarytitle}
-          onChange={handleChange}
-          margin="normal"
-          variant="outlined"
-        />
-        <ThemeField
-          label="Original Title"
-          name="originaltitle"
-          value={formData.originaltitle}
-          onChange={handleChange}
-          margin="normal"
-          variant="outlined"
-        />
-        <br />
-        <ThemeField
-          label="Is Adult?"
-          name="isadult"
-          value={formData.isadult}
-          onChange={handleChange}
-          margin="normal"
-          variant="outlined"
-        />
-        <ThemeField
-          label="Start Year"
-          name="startyear"
-          value={formData.startyear}
+          label="Birth Year"
+          name="birthyear"
+          value={formData.birthyear}
           onChange={handleChange}
           margin="normal"
           variant="outlined"
           type="number"
         />
         <ThemeField
-          label="End Year"
-          name="endyear"
-          value={formData.endyear}
-          onChange={handleChange}
-          margin="normal"
-          variant="outlined"
-          type="number"
-        />
-        <ThemeField
-          label="Runtime (minutes)"
-          name="runtimeminutes"
-          value={formData.runtimeminutes}
+          label="Death Year"
+          name="deathyear"
+          value={formData.deathyear}
           onChange={handleChange}
           margin="normal"
           variant="outlined"
@@ -147,9 +107,8 @@ const MovieForm = () => {
           </ThemeProvider>
         </div>
       </Box>
-      {/* </Box> */}
     </BlackBox>
   )
 }
 
-export default MovieForm
+export default NameForm

@@ -94,6 +94,54 @@ app.delete('/basics/:id', async (req, res) => {
     console.log(err.message)
   }
 })
+app.post('/names', async (req, res) => {
+  try {
+    const { nconst, primaryname, birthyear, deathyear } = req.body
+    const newName = await pool.query(
+      'INSERT INTO names_imdb (nconst, primaryname, birthyear, deathyear) VALUES($1, $2, $3, $4) RETURNING *',
+      [nconst, primaryname, birthyear, deathyear],
+    )
+    res.json(newName.rows[0])
+  } catch (err) {
+    console.error(err.message)
+  }
+})
+
+app.get('/names', async (req, res) => {
+  try {
+    const allNames = await pool.query('SELECT * FROM names_imdb')
+    res.json(allNames.rows)
+  } catch (err) {
+    console.error(err.message)
+  }
+})
+
+app.put('/names/:nconst', async (req, res) => {
+  try {
+    const { nconst } = req.params
+    const { primaryname, birthyear, deathyear } = req.body
+    const updateName = await pool.query(
+      'UPDATE names_imdb SET primaryname = $1, birthyear = $2, deathyear = $3 WHERE nconst = $4',
+      [primaryname, birthyear, deathyear, nconst],
+    )
+    res.json('Name was updated!')
+  } catch (err) {
+    console.error(err.message)
+  }
+})
+
+app.delete('/names/:nconst', async (req, res) => {
+  try {
+    const { nconst } = req.params
+    const deleteName = await pool.query(
+      'DELETE FROM names_imdb WHERE nconst = $1',
+      [nconst],
+    )
+    res.json('Name was deleted!')
+  } catch (err) {
+    console.log(err.message)
+  }
+})
 
 app.listen(5000, () => {
   console.log('server has started on port 5000')

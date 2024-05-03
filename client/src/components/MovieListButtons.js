@@ -72,16 +72,21 @@ const MovieList = () => {
         method: 'DELETE',
       })
       if (response.ok) {
-        console.log('Movie deleted successfully')
         // Fetch the updated movie list after successful deletion
         const updatedResponse = await fetch('http://localhost:5000/basics')
         const updatedData = await updatedResponse.json()
         setMovies(updatedData)
+
+        // Display a success message
+        alert('Movie deleted successfully!')
       } else {
-        console.error('Failed to delete movie')
+        // Display an error message
+        const errorData = await response.json()
+        alert(`Failed to delete movie: ${errorData.message}`)
       }
     } catch (error) {
       console.error(error)
+      alert('An error occurred while deleting the movie.')
     }
   }
 
@@ -143,8 +148,13 @@ const MovieList = () => {
   }
 
   const filteredMovies = movies.filter((movie) =>
-    Object.keys(filters).every((key) =>
-      movie[key].toString().toLowerCase().includes(filters[key].toLowerCase()),
+    Object.keys(filters).every(
+      (key) =>
+        movie[key] != null &&
+        movie[key]
+          .toString()
+          .toLowerCase()
+          .includes(filters[key].toLowerCase()),
     ),
   )
   return (
