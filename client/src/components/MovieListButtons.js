@@ -29,6 +29,8 @@ const theme = createTheme({
 const MovieList = () => {
   const [movies, setMovies] = useState([])
   const [updateMovie, setUpdateMovie] = useState(null)
+  const [deleteTrigger, setDeleteTrigger] = useState(0) // State to trigger re-fetching
+
   const [updatedFormData, setUpdatedFormData] = useState({
     tconst: '',
     titletype: '',
@@ -64,7 +66,7 @@ const MovieList = () => {
     const interval = setInterval(fetchMovies, 1000) // Fetch movies every second
 
     return () => clearInterval(interval) // Clean up interval on component unmount
-  }, [])
+  }, [deleteTrigger])
 
   const handleDelete = async (tconst) => {
     try {
@@ -72,23 +74,23 @@ const MovieList = () => {
         method: 'DELETE',
       })
       if (response.ok) {
+        console.log('Movie deleted successfully')
         // Fetch the updated movie list after successful deletion
         const updatedResponse = await fetch('http://localhost:5000/basics')
         const updatedData = await updatedResponse.json()
         setMovies(updatedData)
-
-        // Display a success message
-        alert('Movie deleted successfully!')
+        setDeleteTrigger((prev) => prev + 1)
+        alert('movie deleted succesfully')
       } else {
-        // Display an error message
-        const errorData = await response.json()
-        alert(`Failed to delete movie: ${errorData.message}`)
+        console.error('Failed to delete movie')
+        alert('failed to delete movie')
       }
     } catch (error) {
       console.error(error)
-      alert('An error occurred while deleting the movie.')
+      alert('failed to delete Movie')
     }
   }
+  // Depend on a state that changes when delete is successful
 
   const handleUpdate = (movie) => {
     setUpdateMovie(movie)

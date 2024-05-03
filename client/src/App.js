@@ -30,6 +30,8 @@ import NameList from './components/NamesList'
 import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
 import Select from '@mui/material/Select'
+import GenreForm from './components/GenreInput'
+import GenreList from './components/GenreList'
 
 function App() {
   const [selectedTable, setSelectedTable] = useState('')
@@ -54,7 +56,13 @@ function App() {
             <NameList />
           </div>
         )
-
+      case 'genres_imdb':
+        return (
+          <div>
+            <GenreForm />
+            <GenreList />
+          </div>
+        )
       default:
         return null
     }

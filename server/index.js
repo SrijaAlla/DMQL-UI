@@ -43,7 +43,7 @@ app.post('/basics', async (req, res) => {
 app.get('/basics', async (req, res) => {
   try {
     const allMovies = await pool.query(
-      'SELECT * FROM basics_imdb ORDER BY tconst DESC LIMIT 100',
+      'SELECT * FROM basics_imdb ORDER BY tconst DESC LIMIT 1000',
     )
     res.json(allMovies.rows)
   } catch (err) {
@@ -112,7 +112,7 @@ app.post('/names', async (req, res) => {
 app.get('/names', async (req, res) => {
   try {
     const allNames = await pool.query(
-      'SELECT * FROM names_imdb ORDER BY nconst DESC LIMIT 100',
+      'SELECT * FROM names_imdb ORDER BY nconst DESC LIMIT 1000',
     )
     res.json(allNames.rows)
   } catch (err) {
@@ -142,6 +142,56 @@ app.delete('/names/:nconst', async (req, res) => {
       [nconst],
     )
     res.json('Name was deleted!')
+  } catch (err) {
+    console.log(err.message)
+  }
+})
+app.post('/genres', async (req, res) => {
+  try {
+    const { tconst, genre } = req.body
+    const newGenre = await pool.query(
+      'INSERT INTO genres_imdb (tconst, genre) VALUES($1, $2) RETURNING *',
+      [tconst, genre],
+    )
+    res.json(newGenre.rows[0])
+  } catch (err) {
+    console.error(err.message)
+  }
+})
+
+app.get('/genres', async (req, res) => {
+  try {
+    const allGenres = await pool.query(
+      'SELECT * FROM genres_imdb ORDER BY tconst DESC LIMIT 1000',
+    )
+    res.json(allGenres.rows)
+  } catch (err) {
+    console.error(err.message)
+  }
+})
+
+app.put('/genres/:tconst/:genre', async (req, res) => {
+  try {
+    const { tconst, genre } = req.params
+    const { newGenre } = req.body
+    const updateGenre = await pool.query(
+      'UPDATE genres_imdb SET genre = $1 WHERE tconst = $2 AND genre = $3',
+      [newGenre, tconst, genre],
+    )
+    res.json('Genre was updated!')
+  } catch (err) {
+    console.error(err.message)
+  }
+})
+
+app.delete('/genres/:tconst/:genre', async (req, res) => {
+  try {
+    const { tconst, genre } = req.params
+    const deleteGenre = await pool.query(
+      'DELETE FROM genres_imdb WHERE tconst = $1 AND genre = $2',
+      [tconst, genre],
+    )
+    res.json('Genre was deleted!')
   } catch (err) {
     console.log(err.message)
   }
